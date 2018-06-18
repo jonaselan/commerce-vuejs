@@ -14,15 +14,15 @@
         <div class="product-image">
           <!-- cria uma relação entre o atributo e a propriedade -->
           <!-- v-bind:src -->
-          <img :src='image'>
+          <img :src="image">
         </div>
         
         <div class="product-info">
           <!-- {{ EXPRESSION }} -->
-          <h1> {{ product }} </h1>
+          <h1> {{ title }} </h1>
           
-          <p v-if="inventory > 10"> In stock </p>
-          <p v-else-if="inventory > 0 && inventory <= 10"> Almost sold out </p>
+          <p v-if="inStock > 10"> In stock ({{ inStock }}) </p>
+          <p v-else-if="inStock > 0 && inStock <= 10"> Almost sold out ({{ inStock }})</p>
           <p v-else> Out of stock </p>
           
           <!-- detalhes -->
@@ -32,12 +32,12 @@
           
           <!-- variedades -->
           <!-- style coloca estilo -->
-          <div v-for="variant in variants" 
-              :key=variant.id
+          <div v-for="(variant, index) in variants" 
+              :key="variant.id"
               class="color-box"
               :style="variant.styleObject" 
-              @mouseover="updateImage(variant.image)">
-              <p> {{ variant.quantity }} </p>
+              @mouseover="updateImage(index)">
+              <!-- <p> {{ variant.quantity }} </p> -->
           </div>
           
           <!-- v-on:click -->
