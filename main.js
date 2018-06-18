@@ -1,4 +1,6 @@
+// componentes só podem retornar um elemento
 Vue.component('product', {
+  // prop é um atributo especial que passa dados entre componentes
   props: {
     premium:{
         type: Boolean,
@@ -46,6 +48,9 @@ Vue.component('product', {
     </div>
   `,
   data(){
+    // cada componente retorna um novo objeto data, e isso é importante poís 
+    // dessa forma cada componente é maleavel a novos valores, e não 
+    // compartilha os mesmos dados se for utilizados em diversos locais
     return {
       product: 'Mugs',
       brand: 'Mbrandgs',
@@ -53,7 +58,7 @@ Vue.component('product', {
       details: ["Pretty cool", "For coffee"],
       variants: [
         {
-          id: 234,
+          id: 4,
           styleObject: {
             backgroundColor: "red",
             border: '1px solid green'
@@ -62,7 +67,7 @@ Vue.component('product', {
           image: "https://secure.img1-fg.wfcdn.com/im/31544274/resize-h800%5Ecompr-r85/7431/7431785/Java+Coffee+Mug.jpg"
         },
         {
-          id: 235,
+          id: 5,
           styleObject: {
             backgroundColor: "black",
             border: '1px solid green'
@@ -77,7 +82,8 @@ Vue.component('product', {
   methods: {
     // função anonima
     addToCart: function(){
-      this.$emit('add-to-cart')
+      // emitir um evento
+      this.$emit('add-to-cart', this.variants[this.selectedVariant].id)
     },
     // sintax E6S 
     updateImage(index){
@@ -107,12 +113,12 @@ var app = new Vue({
   // relacionando com um elemento id=app
   el: '#app',
   data: {
-    cart: 0,
+    cart: [],
   },
   methods: {
-    updateCart(){
+    updateCart(id){
       // this se refere ao valor dentro de data
-      this.cart += 1
+      this.cart.push(id)
     }
   }
 
