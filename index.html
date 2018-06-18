@@ -20,10 +20,35 @@
         <div class="product-info">
           <!-- {{ EXPRESSION }} -->
           <h1> {{ product }} </h1>
-          <p> {{ description }} </p>  
+          
           <p v-if="inventory > 10"> In stock </p>
           <p v-else-if="inventory > 0 && inventory <= 10"> Almost sold out </p>
           <p v-else> Out of stock </p>
+          
+          <!-- detalhes -->
+          <ul>
+            <li v-for="detail in details">{{ detail }}</li>
+          </ul>
+          
+          <!-- variedades -->
+          <!-- style coloca estilo -->
+          <div v-for="variant in variants" 
+              :key=variant.id
+              class="color-box"
+              :style="variant.styleObject" 
+              @mouseover="updateImage(variant.image)">
+              <p> {{ variant.quantity }} </p>
+          </div>
+          
+          <!-- v-on:click -->
+          <button type="button" 
+                  :disabled="!inStock" 
+                  :class="{ disabledButton: !inStock }"
+                  @click="addToCart"> Add to Cart </button>
+          
+          <div class="cart">
+            <p>Cart ({{ cart }})</p>          
+          </div>
         </div>
         
       </div>
