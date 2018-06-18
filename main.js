@@ -42,10 +42,6 @@ Vue.component('product', {
                 :disabled="!inStock" 
                 :class="{ disabledButton: !inStock }"
                 @click="addToCart"> Add to Cart </button>
-        
-        <div class="cart">
-          <p>Cart ({{ cart }})</p>          
-        </div>
       </div>
     </div>
   `,
@@ -75,15 +71,15 @@ Vue.component('product', {
           image: "https://shop.pbs.org/ccstore/v1/images/?source=/file/v6723789822436512814/products/CSTM501.gif&height=100&width=100"
         }
       ],
-      cart: 0,
     }
   },
   // metódos que podem ser chamados na view
   methods: {
+    // função anonima
     addToCart: function(){
-      // this se refere ao valor dentro de data
-      this.cart += 1
+      this.$emit('add-to-cart')
     },
+    // sintax E6S 
     updateImage(index){
       this.selectedVariant = index
     }
@@ -100,9 +96,8 @@ Vue.component('product', {
           return this.variants[this.selectedVariant].quantity
         },
         shipping(){
-          if (this.premium) 
-            return 'free'
-          return 2.
+          if (this.premium) return 'free'
+          return 2.99
         }
       }
 })
@@ -110,6 +105,15 @@ Vue.component('product', {
 // Instância do Vue (coração da aplicação)
 var app = new Vue({
   // relacionando com um elemento id=app
-  el: '#app'
+  el: '#app',
+  data: {
+    cart: 0,
+  },
+  methods: {
+    updateCart(){
+      // this se refere ao valor dentro de data
+      this.cart += 1
+    }
+  }
 
 });
