@@ -1,13 +1,61 @@
-// Instância do Vue (coração da aplicação)
-var app = new Vue({
-  // relacionando com um elemento id=app
-  el: '#app',
-  data: {
-    product: 'Mugs',
-    brand: 'Mbrandgs',
-    selectedVariant: 0,
-    details: ["Pretty cool", "For coffee"],
-    variants: [
+Vue.component('product', {
+  props: {
+    premium:{
+        type: Boolean,
+        required: true
+    }
+  },
+  template: `
+    <div class="product">
+      
+      <div class="product-image">
+        <!-- v-bind:src -->
+        <!-- cria uma relação entre o atributo e a propriedade -->
+        <img :src="image">
+      </div>
+      
+      <div class="product-info">
+        <!-- {{ EXPRESSION }} -->
+        <h1> {{ title }} </h1>
+        
+        <p v-if="inStock > 10"> In stock ({{ inStock }}) </p>
+        <p v-else-if="inStock > 0 && inStock <= 10"> Almost sold out ({{ inStock }})</p>
+        <p v-else> Out of stock </p>
+        <p> Shipping: {{ shipping }} </p> 
+        <!-- detalhes -->
+        <ul>
+          <li v-for="detail in details">{{ detail }}</li>
+        </ul>
+        
+        <!-- variedades -->
+        <!-- style coloca estilo -->
+        <div v-for="(variant, index) in variants" 
+            :key="variant.id"
+            class="color-box"
+            :style="variant.styleObject" 
+            @mouseover="updateImage(index)">
+            <!-- <p> {{ variant.quantity }} </p> -->
+        </div>
+        
+        <!-- v-on:click -->
+        <button type="button" 
+                :disabled="!inStock" 
+                :class="{ disabledButton: !inStock }"
+                @click="addToCart"> Add to Cart </button>
+        
+        <div class="cart">
+          <p>Cart ({{ cart }})</p>          
+        </div>
+      </div>
+    </div>
+  `,
+  data(){
+    return {
+      product: 'Mugs',
+      brand: 'Mbrandgs',
+      selectedVariant: 0,
+      details: ["Pretty cool", "For coffee"],
+      variants: [
         {
           id: 234,
           styleObject: {
@@ -27,7 +75,8 @@ var app = new Vue({
           image: "https://shop.pbs.org/ccstore/v1/images/?source=/file/v6723789822436512814/products/CSTM501.gif&height=100&width=100"
         }
       ],
-      cart: 0
+      cart: 0,
+    }
   },
   // metódos que podem ser chamados na view
   methods: {
@@ -41,15 +90,26 @@ var app = new Vue({
   },
   // os resultados são armazenados no cache até o momento de sua alteração
   computed: {
-    title(){
-      return this.brand + ' ' + this.product
-    },
-    image(){
-      return this.variants[this.selectedVariant].image
-    },
-    inStock(){
-      return this.variants[this.selectedVariant].quantity
-    }
-  }
+        title(){
+          return this.brand + ' ' + this.product
+        },
+        image(){
+          return this.variants[this.selectedVariant].image
+        },
+        inStock(){
+          return this.variants[this.selectedVariant].quantity
+        },
+        shipping(){
+          if (this.premium) 
+            return 'free'
+          return 2.
+        }
+      }
+})
+
+// Instância do Vue (coração da aplicação)
+var app = new Vue({
+  // relacionando com um elemento id=app
+  el: '#app'
 
 });

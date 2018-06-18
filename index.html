@@ -8,51 +8,8 @@
   <body>
     <div class="nav-bar"> </div>
     
-    <div id="app">
-      <div class="product">
-        
-        <div class="product-image">
-          <!-- cria uma relação entre o atributo e a propriedade -->
-          <!-- v-bind:src -->
-          <img :src="image">
-        </div>
-        
-        <div class="product-info">
-          <!-- {{ EXPRESSION }} -->
-          <h1> {{ title }} </h1>
-          
-          <p v-if="inStock > 10"> In stock ({{ inStock }}) </p>
-          <p v-else-if="inStock > 0 && inStock <= 10"> Almost sold out ({{ inStock }})</p>
-          <p v-else> Out of stock </p>
-          
-          <!-- detalhes -->
-          <ul>
-            <li v-for="detail in details">{{ detail }}</li>
-          </ul>
-          
-          <!-- variedades -->
-          <!-- style coloca estilo -->
-          <div v-for="(variant, index) in variants" 
-              :key="variant.id"
-              class="color-box"
-              :style="variant.styleObject" 
-              @mouseover="updateImage(index)">
-              <!-- <p> {{ variant.quantity }} </p> -->
-          </div>
-          
-          <!-- v-on:click -->
-          <button type="button" 
-                  :disabled="!inStock" 
-                  :class="{ disabledButton: !inStock }"
-                  @click="addToCart"> Add to Cart </button>
-          
-          <div class="cart">
-            <p>Cart ({{ cart }})</p>          
-          </div>
-        </div>
-        
-      </div>
-      
+    <div id="app">  
+        <product :premium="false"></product>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/vue"></script> 
