@@ -1,3 +1,5 @@
+var eventBus = new Vue();
+
 // componentes só podem retornar um elemento
 Vue.component('product', {
   // prop é um atributo especial que passa dados entre componentes
@@ -46,11 +48,12 @@ Vue.component('product', {
                 :class="{ disabledButton: !inStock }"
                 @click="addToCart"> Add to Cart </button>
       </div>
-      <product-review @submit-review="addReview"></product-review>
-      <reviews :reviews="reviews"></reviews>
+      
+      <tabs :reviews="reviews"> </tabs>      
     </div>
   `,
   data(){
+    // SISTEMA DE REATIVIDADE
     // cada componente retorna um novo objeto data, e isso é importante poís 
     // dessa forma cada componente é maleavel a novos valores, e não 
     // compartilha os mesmos dados se for utilizados em diversos locais
@@ -92,29 +95,32 @@ Vue.component('product', {
     // E6S sintax
     updateImage(index){
       this.selectedVariant = index
-    },
-    addReview(productReview){
-      this.reviews.push(productReview)
     }
   },
   // os resultados são armazenados no cache até o momento de sua alteração
   computed: {
-        title(){
-          return this.brand + ' ' + this.product
-        },
-        image(){
-          return this.variants[this.selectedVariant].image
-        },
-        inStock(){
-          return this.variants[this.selectedVariant].quantity
-        },
-        shipping(){
-          if (this.premium) return 'free'
-          return 2.99
-        }
-      }
+    title(){
+      return this.brand + ' ' + this.product
+    },
+    image(){
+      return this.variants[this.selectedVariant].image
+    },
+    inStock(){
+      return this.variants[this.selectedVariant].quantity
+    },
+    shipping(){
+      if (this.premium) return 'free'
+      return 2.99
+    }
+  },
+  mounted() {
+    eventBus.$on('submit-review', productReview => {
+      this.reviews.push(productReview)
+    })
+  }
 })
 
+// ------------- CREATE REVIEWS
 Vue.component('product-review', {
   // v-model: two-way data binding (retorna dados do front para o componente)
   template: `
@@ -143,11 +149,9 @@ Vue.component('product-review', {
         <label for="name"> Rating: </label>
         <div class="select">
           <select v-model.number="rating">
-            <option>5</option>
-            <option>4</option>
-            <option>3</option>
-            <option>2</option>
-            <option>1</option>
+            <option v-for="item in [1, 2, 3, 4, 5]">
+              {{item}}
+            </option>
           </select>
         </div>
       </div>
@@ -175,11 +179,11 @@ Vue.component('product-review', {
             author: this.author, review: this.review,
             rating: this.rating, date: new Date()
           }
-          author = null
-          review = null
-          rating = null      
-          date = null
-          this.$emit('submit-review', productReview)
+          this.author = null
+          this.review = null
+          this.rating = null      
+          this.date = null
+          eventBus.$emit('submit-review', productReview)
         }
         else {
           if (!this.author) this.errors.push('Name required')
@@ -190,6 +194,7 @@ Vue.component('product-review', {
   }
 })
 
+// ------------- LIST REVIEWS
 Vue.component('reviews', {
   props: ['reviews'],
   template: `
@@ -207,9 +212,47 @@ Vue.component('reviews', {
   `
 })
 
+// ------------- TABS
+Vue.component('tabs', {
+  props: {
+    reviews: {
+      type: Array,
+      required: true
+    }
+  },
+  template: `
+    <div class="container">
+      <span class="tab" 
+            v-for="(tab, index) in tabs" 
+            :key="index"
+            :class="{activeTab: selectedTab === tab}"
+            @click="selectedTab = tab">
+        {{ tab }}
+      </span>
+      
+      <div v-show="selectedTab === 'Reviews'">
+        <p v-if="!reviews.length">
+          There are no reviews
+        </p>
+        <p v-else>
+          <reviews :reviews="reviews"></reviews>
+        </p>
+      </div>
+      
+      <product-review v-show="selectedTab === 'Make a Review'"></product-review>
+    </div>
+  `,
+  data() {
+    return {
+      tabs: ['Reviews', 'Make a Review'],
+      selectedTab: 'Reviews'
+    }
+  },
+})
+
 // Instância do Vue (coração da aplicação)
 var app = new Vue({
-  // relacionando com um elemento id=app
+  // relacionando com um elemento onda a instância vai ser criada
   el: '#app',
   data: {
     cart: [],
