@@ -1,5 +1,10 @@
 var eventBus = new Vue();
 
+// não é prático usar aqui, mas é só uma forma de estudar
+Vue.filter('uppercase', function(value){
+    return value.toUpperCase()
+})
+
 // componentes só podem retornar um elemento
 Vue.component('product', {
   // prop é um atributo especial que passa dados entre componentes
@@ -20,8 +25,7 @@ Vue.component('product', {
       
       <div class="product-info">
         <!-- {{ EXPRESSION }} -->
-        <h1> {{ title }} </h1>
-        
+        <h1> {{ title | uppercase }} </h1>
         <p v-if="inStock > 10"> In stock ({{ inStock }}) </p>
         <p v-else-if="inStock > 0 && inStock <= 10"> Almost sold out ({{ inStock }})</p>
         <p v-else> Out of stock </p>
