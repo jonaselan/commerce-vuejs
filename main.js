@@ -31,6 +31,7 @@ Vue.component('product', {
         
         <!-- variedades -->
         <!-- style coloca estilo -->
+        <!-- v-bind:mouseover -->
         <div v-for="(variant, index) in variants" 
             :key="variant.id"
             class="color-box"
@@ -45,6 +46,7 @@ Vue.component('product', {
                 :class="{ disabledButton: !inStock }"
                 @click="addToCart"> Add to Cart </button>
       </div>
+      <product-review @submit-review="addReview"></product-review>
     </div>
   `,
   data(){
@@ -56,6 +58,7 @@ Vue.component('product', {
       brand: 'Mbrandgs',
       selectedVariant: 0,
       details: ["Pretty cool", "For coffee"],
+      reviews: [],
       variants: [
         {
           id: 4,
@@ -85,9 +88,12 @@ Vue.component('product', {
       // emitir um evento
       this.$emit('add-to-cart', this.variants[this.selectedVariant].id)
     },
-    // sintax E6S 
+    // E6S sintax
     updateImage(index){
       this.selectedVariant = index
+    },
+    addReview(productReview){
+      this.reviews.push(productReview)
     }
   },
   // os resultados são armazenados no cache até o momento de sua alteração
@@ -107,6 +113,65 @@ Vue.component('product', {
         }
       }
 })
+
+Vue.component('product-review', {
+  // v-model: two-way data binding (retorna dados do front para o componente)
+  template: `
+  <div>
+    <!-- prevent: evita que o submit tenha seu comportamento normal (recarregar a página) -->
+    <form class="review-form" @submit.prevent="onSubmit">
+      <h1>Leave a review:</h1>
+      <div class="field">
+        <label for="name"> Name: </label>
+        <input class="input" type="text" v-model="name">      
+      </div>
+      
+      <div class="field">    
+        <label for="name"> Review: </label>
+        <textarea class="textarea" v-model="review"></textarea>
+      </div>
+      
+      <div class="field">        
+        <label for="name"> Rating: </label>
+        <div class="select">
+          <select v-model.number="rating">
+            <option>5</option>
+            <option>4</option>
+            <option>3</option>
+            <option>2</option>
+            <option>1</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="control">
+        <button class="button is-info">Submit</button>
+      </div>
+    </form>
+  </div>
+  `,
+  data() {
+    return {
+      name: null,
+      review: null,
+      rating: null,
+    }
+  },
+  methods: {
+      onSubmit() {
+        let productReview = {
+          name: this.name,
+          review: this.review,
+          rating: this.rating
+        }
+        name = null
+        review = null
+        rating = null      
+        this.$emit('submit-review', productReview)
+      }
+  }
+})
+
 
 // Instância do Vue (coração da aplicação)
 var app = new Vue({
