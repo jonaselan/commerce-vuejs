@@ -122,14 +122,21 @@ Vue.component('product-review', {
     <!-- prevent: evita que o submit tenha seu comportamento normal (recarregar a página) -->
     <form class="review-form" @submit.prevent="onSubmit">
       <h1>Leave a review:</h1>
+      
+      <p v-if="errors.length">
+        <ul>
+          <li v-for="error in errors"> {{ error }}</li>
+        </ul>
+      </p>
+      
       <div class="field">
         <label for="author"> Author: </label>
-        <input class="input" type="text" v-model="author" required>      
+        <input class="input" type="text" v-model="author">      
       </div>
       
       <div class="field">    
         <label for="name"> Review: </label>
-        <textarea class="textarea" v-model="review" required></textarea>
+        <textarea class="textarea" v-model="review"></textarea>
       </div>
       
       <div class="field">        
@@ -156,22 +163,29 @@ Vue.component('product-review', {
       author: null,
       review: null,
       rating: null,
-      date: null
+      date: null,
+      errors: []
     }
   },
   methods: {
       onSubmit() {
-        let productReview = {
-          author: this.author,
-          review: this.review,
-          rating: this.rating,
-          date: new Date()
+        this.errors = []
+        if (this.author && this.review && this.rating){
+          let productReview = {
+            author: this.author, review: this.review,
+            rating: this.rating, date: new Date()
+          }
+          author = null
+          review = null
+          rating = null      
+          date = null
+          this.$emit('submit-review', productReview)
         }
-        author = null
-        review = null
-        rating = null      
-        date = null
-        this.$emit('submit-review', productReview)
+        else {
+          if (!this.author) this.errors.push('Name required')
+          if (!this.review) this.errors.push('Review required')
+          if (!this.rating) this.errors.push('Rating required')
+        }
       }
   }
 })
@@ -187,6 +201,7 @@ Vue.component('reviews', {
         <p><span class="thick"> Review:</span> {{ review.review }}</p>
         <p><span class="thick"> By:</span> {{ review.author }}</p>
       </li> 
+      <hr>
     </ul>
   </div>
   `
