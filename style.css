@@ -77,6 +77,10 @@ body {
    width: 100%;
    height: 60px;
  }
+ 
+ .thick {
+    font-weight: bold;
+}
 
  .tab {
    margin-left: 20px;

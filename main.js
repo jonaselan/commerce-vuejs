@@ -47,6 +47,7 @@ Vue.component('product', {
                 @click="addToCart"> Add to Cart </button>
       </div>
       <product-review @submit-review="addReview"></product-review>
+      <reviews :reviews="reviews"></reviews>
     </div>
   `,
   data(){
@@ -122,13 +123,13 @@ Vue.component('product-review', {
     <form class="review-form" @submit.prevent="onSubmit">
       <h1>Leave a review:</h1>
       <div class="field">
-        <label for="name"> Name: </label>
-        <input class="input" type="text" v-model="name">      
+        <label for="author"> Author: </label>
+        <input class="input" type="text" v-model="author" required>      
       </div>
       
       <div class="field">    
         <label for="name"> Review: </label>
-        <textarea class="textarea" v-model="review"></textarea>
+        <textarea class="textarea" v-model="review" required></textarea>
       </div>
       
       <div class="field">        
@@ -152,26 +153,44 @@ Vue.component('product-review', {
   `,
   data() {
     return {
-      name: null,
+      author: null,
       review: null,
       rating: null,
+      date: null
     }
   },
   methods: {
       onSubmit() {
         let productReview = {
-          name: this.name,
+          author: this.author,
           review: this.review,
-          rating: this.rating
+          rating: this.rating,
+          date: new Date()
         }
-        name = null
+        author = null
         review = null
         rating = null      
+        date = null
         this.$emit('submit-review', productReview)
       }
   }
 })
 
+Vue.component('reviews', {
+  props: ['reviews'],
+  template: `
+  <div>
+    <ul>
+      <li v-for="review in reviews" :key="review.id">
+        <p><span class="thick"> Rating:</span> {{ review.rating }} </p>
+        <p><span class="thick"> Created at:</span> {{ review.date }}</p>            
+        <p><span class="thick"> Review:</span> {{ review.review }}</p>
+        <p><span class="thick"> By:</span> {{ review.author }}</p>
+      </li> 
+    </ul>
+  </div>
+  `
+})
 
 // Instância do Vue (coração da aplicação)
 var app = new Vue({
