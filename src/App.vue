@@ -6,6 +6,7 @@
         <li><router-link to="/products"> Products </router-link></li>
       </ul>
     </div>
+    
     <div id="app">
       <router-view/>
     </div>

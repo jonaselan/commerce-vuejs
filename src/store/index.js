@@ -33,5 +33,11 @@ export default new Vuex.Store({
               image: "https://shop.pbs.org/ccstore/v1/images/?source=/file/v6723789822436512814/products/CSTM501.gif&height=100&width=100"
             }
         ]
+    },
+    getters: {
+      // state é passado automaticamente pelo vuex
+      getProducts(state) {
+        return state.products
+      }
     }
 })
