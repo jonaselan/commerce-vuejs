@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Products from '@/components/Products'
+import Shop from '@/components/Shop'
 import Home from '@/components/Home'
 
 Vue.use(Router)
@@ -14,8 +14,8 @@ export default new Router({
     },
     {
       path: '/products',
-      name: 'Products',
-      component: Products
+      name: 'Shop',
+      component: Shop
     }
   ],
   mode: 'history'

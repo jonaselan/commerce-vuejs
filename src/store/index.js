@@ -34,6 +34,11 @@ export default new Vuex.Store({
             }
         ]
     },
+    // muda diretamente os states
+    // são execuções sincronas
+    // mutations: {
+
+    // },
     getters: {
       // state é passado automaticamente pelo vuex
       getProducts(state) {
