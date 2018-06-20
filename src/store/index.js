@@ -4,12 +4,12 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-// exportar para fora desse arquivo
+// exportar para toda a aplicação
 export const store = new Vuex.Store({
     // obrigatório em cada store
     state: {
         cart: [],
-        variants: [
+        products: [
             {
               id: 4,
               styleObject: {
