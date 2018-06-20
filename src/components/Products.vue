@@ -1,15 +1,24 @@
 <template>
-  <div>
-    sim
+  <div class="product">
+    <div v-for="product in products" :key="product.id">
+      <div class="product-image">
+        <!-- v-bind:src -->
+        <!-- cria uma relação entre o atributo e a propriedade -->
+        <img :src="product.image">
+      </div>
+      <div class="product-info">
+        <h4> {{ product.title }}</h4>
+        <p> {{ product.price }} </p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Products',
-  data () {
-    return {
-      
+  computed: {
+    products() {
+      return this.$store.state.products
     }
   }
 }

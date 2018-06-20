@@ -1,17 +1,19 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 // import axios from 'axios'
 
 Vue.use(Vuex)
 
 // exportar para toda a aplicação
-export const store = new Vuex.Store({
+export default new Vuex.Store({
     // obrigatório em cada store
     state: {
         cart: [],
         products: [
             {
               id: 4,
+              title: 'Mug 1',
+              price: 2.99,
               styleObject: {
                 backgroundColor: "red",
                 border: '1px solid green'
@@ -21,6 +23,8 @@ export const store = new Vuex.Store({
             },
             {
               id: 5,
+              title: 'Mug 2',
+              price: 4.99,
               styleObject: {
                 backgroundColor: "black",
                 border: '1px solid green'

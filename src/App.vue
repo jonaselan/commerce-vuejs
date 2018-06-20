@@ -12,15 +12,15 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
+// <script>
+// export default {
+//   data() {
+//     return {
 
-    }
-  }
-}
-</script>
+//     }
+//   }
+// }
+// </script>
 
 <style>
   body {
