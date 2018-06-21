@@ -36,13 +36,18 @@ export default new Vuex.Store({
     },
     // muda diretamente os states
     // são execuções sincronas
-    // mutations: {
-
-    // },
+    mutations: {
+      addToCart(state, user){
+        state.cart.push(user.id)
+      }
+    },
     getters: {
       // state é passado automaticamente pelo vuex
       getProducts(state) {
         return state.products
+      },
+      getCart(state){
+        return state.cart
       }
     }
 })

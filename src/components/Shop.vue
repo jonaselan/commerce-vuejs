@@ -1,14 +1,24 @@
 <template>
-  <div class="product">
-    <div v-for="product in products" :key="product.id">
-      <div class="product-image">
-        <!-- v-bind:src -->
-        <!-- cria uma relação entre o atributo e a propriedade -->
-        <img :src="product.image">
-      </div>
-      <div class="product-info">
-        <h4> {{ product.title }}</h4>
-        <p> {{ product.price }} </p>
+  <div>
+    <div class="cart">
+      <p>Cart ({{ cart.length }})</p>          
+    </div>
+    <div class="product">
+      <div v-for="product in products" :key="product.id">
+        <div class="product-image">
+          <!-- v-bind:src -->
+          <!-- cria uma relação entre o atributo e a propriedade -->
+          <img :src="product.image">
+        </div>
+        <div class="product-info">
+          <h4> {{ product.title }}</h4>
+          <p> {{ product.price }} </p>
+        </div>
+        
+        <!--:disabled="!inStock" 
+        :class="{ disabledButton: !inStock }"-->
+        <button type="button" 
+        @click="addProductCart(product)"> Add to Cart </button>
       </div>
     </div>
   </div>
@@ -20,8 +30,14 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
-      products: 'getProducts'
+      products: 'getProducts',
+      cart: 'getCart'
     })
+  },
+  methods: {
+    addProductCart(product){
+      this.$store.commit('addToCart', product)
+    }
   }
 }
 </script>
