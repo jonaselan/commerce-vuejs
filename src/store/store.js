@@ -1,5 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import actions from './actions';
+import getters from './getters';
+import mutations from './mutations';
 // import axios from 'axios'
 
 Vue.use(Vuex)
@@ -36,28 +39,9 @@ export default new Vuex.Store({
     },
     // muda diretamente os states
     // são execuções sincronas
-    mutations: {
-      addToCart(state, user){
-        state.cart.push(user.id)
-      }
-    },
-    getters: {
-      // state é passado automaticamente pelo vuex
-      getProducts(state) {
-        return state.products
-      },
-      getCart(state){
-        return state.cart
-      }
-    },
+    mutations,
+    // enviar dados para componentes
+    getters,
     // usado para executar mutations e realizar ações assicronas
-    actions: {
-      addToCart({ commit }, user) {
-        // simular requisição assicrona
-        setTimeout(() => {
-          commit('addToCart', user)  
-        }, 1000)
-        
-      }
-    },
+    actions
 })
