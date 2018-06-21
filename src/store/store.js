@@ -14,7 +14,7 @@ export default new Vuex.Store({
         cart: [],
         products: [
             {
-              id: 4,
+              id: 1,
               title: 'Mug 1',
               price: 2.99,
               styleObject: {
@@ -25,7 +25,7 @@ export default new Vuex.Store({
               image: "https://secure.img1-fg.wfcdn.com/im/31544274/resize-h800%5Ecompr-r85/7431/7431785/Java+Coffee+Mug.jpg"
             },
             {
-              id: 5,
+              id: 2,
               title: 'Mug 2',
               price: 4.99,
               styleObject: {

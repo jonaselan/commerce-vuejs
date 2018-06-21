@@ -14,11 +14,11 @@
           <h4> {{ product.title }}</h4>
           <p> {{ product.price }} </p>
         </div>
-        
-        <!--:disabled="!inStock" 
-        :class="{ disabledButton: !inStock }"-->
+        {{ product.quantity }}
+        <!-- :disabled="!inStock(product)" 
+                :class="{ disabledButton: !inStock(product) }" -->
         <button type="button" 
-        @click="addProductCart(product)"> Add to Cart </button>
+                @click="addToCart(product)"> Add to Cart </button>
       </div>
     </div>
   </div>
@@ -35,13 +35,13 @@
       })
     },
     methods: {
-      addProductCart(product){
+      addToCart(product){
         // chamar diretamente a mutations
         // this.$store.commit('addToCart', product)
         
         // usando actions
-        this.$store.dispatch('addToCart', product)
-      }
+        this.$store.dispatch('addProductToCart', product)
+      },
     }
   }
 </script>
