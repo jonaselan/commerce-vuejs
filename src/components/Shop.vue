@@ -25,37 +25,23 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex'
 
-export default {
-  computed: {
-    ...mapGetters({
-      products: 'getProducts',
-      cart: 'getCart'
-    })
-  },
-  methods: {
-    addProductCart(product){
-      this.$store.commit('addToCart', product)
+  export default {
+    computed: {
+      ...mapGetters({
+        products: 'getProducts',
+        cart: 'getCart'
+      })
+    },
+    methods: {
+      addProductCart(product){
+        // chamar diretamente a mutations
+        // this.$store.commit('addToCart', product)
+        
+        // usando actions
+        this.$store.dispatch('addToCart', product)
+      }
     }
   }
-}
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>

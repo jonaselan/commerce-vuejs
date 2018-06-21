@@ -49,5 +49,15 @@ export default new Vuex.Store({
       getCart(state){
         return state.cart
       }
-    }
+    },
+    // usado para executar mutations e realizar ações assicronas
+    actions: {
+      addToCart({ commit }, user) {
+        // simular requisição assicrona
+        setTimeout(() => {
+          commit('addToCart', user)  
+        }, 1000)
+        
+      }
+    },
 })
