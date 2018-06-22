@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="cart">
-      <p>Cart ({{ cart.length }})</p>          
-    </div>
+    <ShopCart/>
     <div class="product">
       <div v-for="product in products" :key="product.id">
         <div class="product-image">
@@ -11,13 +9,14 @@
           <img :src="product.image">
         </div>
         <div class="product-info">
-          <h4> {{ product.title }}</h4>
-          <p> {{ product.price }} </p>
+          <h4> <span class="thick">Title:</span> {{ product.title }}</h4>
+          <p> <span class="thick">Price:</span> {{ product.price }} </p>
+          <p> <span class="thick">Quantity:</span> {{ product.quantity }} </p>
         </div>
-        {{ product.quantity }}
-        <!-- :disabled="!inStock(product)" 
-                :class="{ disabledButton: !inStock(product) }" -->
+        
         <button type="button" 
+                :disabled="!productIsInStock(product)" 
+                :class="{ disabledButton: !productIsInStock(product) }"
                 @click="addToCart(product)"> Add to Cart </button>
       </div>
     </div>
@@ -25,23 +24,23 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import ShopCart from '@/components/ShopCart'
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
+    components:{
+      ShopCart
+    },
     computed: {
       ...mapGetters({
         products: 'getProducts',
-        cart: 'getCart'
+        productIsInStock: 'productIsInStock'
       })
     },
     methods: {
-      addToCart(product){
-        // chamar diretamente a mutations
-        // this.$store.commit('addToCart', product)
-        
-        // usando actions
-        this.$store.dispatch('addProductToCart', product)
-      },
+      ...mapActions({
+        addToCart: 'addProductToCart'  // this.$store.dispatch('addProductToCart', product)
+      }),
     }
   }
 </script>

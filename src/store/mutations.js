@@ -1,7 +1,8 @@
 export default {
   pushProductToCart(state, product){
     state.cart.push({
-      id: product.id,
+      product: product.id,
+      price: product.price,
       quantity: 1
     })
   },

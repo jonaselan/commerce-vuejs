@@ -5,12 +5,15 @@ export default {
     getCart(state){
       return state.cart
     },
-    // getProductStock: (state, product) => {
-    //   const prod = state.products.find(item => item.id === product.id)
-    //   return prod.quantity
-    // },
-    // getTodoById: (state) => (product) => {
-    //   const prod = state.products.find(item => item.id === product.id)
-    //   return prod.quantity
-    // }
+    productIsInStock(){
+      // retornar uma função que recebe o produto como argumento
+      return (product) => {
+        return product.quantity > 0
+      }
+    },
+    totalCart(state){
+      return state.cart.reduce( function( prevVal, elem ) {
+        return Math.round((prevVal + elem.price) * 100) / 100;
+      }, 0 )
+    }
 }
