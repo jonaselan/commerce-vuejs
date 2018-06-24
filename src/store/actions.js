@@ -1,3 +1,5 @@
+import { ApiProducts } from '../services/api';
+
 export default {
     addProductToCart({commit, state}, product) {
       if (product.quantity > 0) {
@@ -11,5 +13,10 @@ export default {
 
         commit('decrementProductInventory', product)
       } 
+    },
+    fetchProducts({commit}) {
+      ApiProducts().then((prods) => {
+        commit('fillProducts', prods)
+      });
     }
 }

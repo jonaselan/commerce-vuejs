@@ -11,5 +11,8 @@ export default {
   },
   decrementProductInventory(state, product){
     product.quantity--
+  },
+  fillProducts(state, products){
+    state.productsApi.push(products.fields.products) 
   }
 }

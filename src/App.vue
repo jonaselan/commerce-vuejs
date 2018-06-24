@@ -3,6 +3,7 @@
     <div class="nav-bar"> 
       <ul>
         <li><router-link to="/"> Home </router-link></li>
+        <li><router-link to="/shopping"> Shop </router-link></li>
         <li><router-link to="/products"> Products </router-link></li>
       </ul>
     </div>

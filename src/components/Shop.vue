@@ -33,7 +33,7 @@
     },
     computed: {
       ...mapGetters({
-        products: 'getProducts',
+        products: 'getShopProducts',
         productIsInStock: 'productIsInStock'
       })
     },

@@ -12,6 +12,7 @@ export default new Vuex.Store({
     // obrigatório em cada store
     state: {
         cart: [],
+        productsApi: [],
         products: [
             {
               id: 1,

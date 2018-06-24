@@ -1,5 +1,5 @@
 export default {
-    getProducts(state) {
+    getShopProducts(state) {
       return state.products
     },
     getCart(state){
@@ -15,5 +15,9 @@ export default {
       return state.cart.reduce( function( prevVal, elem ) {
         return Math.round((prevVal + elem.price) * 100) / 100;
       }, 0 )
+    },
+    getProducts(state){
+      console.log(state.productsApi)
+      return state.productsApi
     }
 }
