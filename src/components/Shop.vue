@@ -24,23 +24,23 @@
 </template>
 
 <script>
-  import ShopCart from '@/components/ShopCart'
-  import { mapGetters, mapActions } from 'vuex'
+import ShopCart from "@/components/ShopCart";
+import { mapGetters, mapActions } from "vuex";
 
-  export default {
-    components:{
-      ShopCart
-    },
-    computed: {
-      ...mapGetters({
-        products: 'getShopProducts',
-        productIsInStock: 'productIsInStock'
-      })
-    },
-    methods: {
-      ...mapActions({
-        addToCart: 'addProductToCart'  // this.$store.dispatch('addProductToCart', product)
-      }),
-    }
+export default {
+  components: {
+    ShopCart
+  },
+  computed: {
+    ...mapGetters({
+      products: "getShopProducts",
+      productIsInStock: "productIsInStock"
+    })
+  },
+  methods: {
+    ...mapActions({
+      addToCart: "addProductToCart" // this.$store.dispatch('addProductToCart', product)
+    })
   }
+};
 </script>

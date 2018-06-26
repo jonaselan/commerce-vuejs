@@ -7,7 +7,7 @@
     <div class="col-sm-4" v-for="prod in getProducts" :key="prod._id">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"> {{ prod.name }} </h3>
+          <h3 class="panel-title"> {{ prod }} </h3>
         </div>
       </div>
     </div>
@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     getProducts(){
-      return this.$store.getters.getProducts
+      return this.$store.getters.getProducts;
     }
   }
 };
