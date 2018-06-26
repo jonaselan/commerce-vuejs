@@ -33,6 +33,16 @@ export default {
             reject(err)
           })
       })
+    },
+    [AUTH_LOGOUT]: ({
+      commit,
+      dispatch
+    }) => {
+      return new Promise((resolve, reject) => {
+        commit(AUTH_LOGOUT)
+        localStorage.removeItem('user-token') // clear your user's token from localstorage
+        resolve()
+      })
     }
   },
   // basic mutations, showing loading, success, error to reflect the api call status and the token when loaded
