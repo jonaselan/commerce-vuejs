@@ -1,3 +1,11 @@
+import {
+  AUTH_REQUEST,
+  AUTH_ERROR,
+  AUTH_SUCCESS,
+  AUTH_LOGOUT
+} from '../actions/auth';
+import axios from 'axios';
+
 export default {
   state: {
     token: localStorage.getItem('user-token') || '',
@@ -12,24 +20,32 @@ export default {
       commit,
       dispatch
     }, user) => {
-      return new Promise((resolve, reject) => { // The Promise used for router redirect in login
+      // The Promise used for router redirect in login
+      return new Promise((resolve, reject) => { 
         commit(AUTH_REQUEST)
         axios({
-            url: 'auth',
+            method: 'post',
+            baseURL: 'http://laravelproject.test',
+            url: '/api/login',
             data: user,
-            method: 'POST'
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
           })
           .then(resp => {
             const token = resp.data.token
-            localStorage.setItem('user-token', token) // store the token in localstorage
-            commit(AUTH_SUCCESS, token)
+            localStorage.setItem('user-token', token)
+            axios.defaults.headers.common['Authorization'] = token
             // you have your token, now log in your user :)
+            commit(AUTH_SUCCESS, resp)
             dispatch(USER_REQUEST)
             resolve(resp)
           })
           .catch(err => {
             commit(AUTH_ERROR, err)
-            localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possible
+            // if the request fails, remove any possible user token if possible
+            localStorage.removeItem('user-token')
             reject(err)
           })
       })
@@ -38,9 +54,12 @@ export default {
       commit,
       dispatch
     }) => {
+      // clear your user's token from localstorage
       return new Promise((resolve, reject) => {
         commit(AUTH_LOGOUT)
-        localStorage.removeItem('user-token') // clear your user's token from localstorage
+        localStorage.removeItem('user-token')
+        // remove the axios default header
+        delete axios.defaults.headers.common['Authorization']
         resolve()
       })
     }
