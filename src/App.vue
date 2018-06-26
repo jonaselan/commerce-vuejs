@@ -17,7 +17,7 @@
 </template>
 
 <script>
-// import { AUTH_LOGOUT } from '../store/actions/auth'
+import { AUTH_LOGOUT } from './store/actions/auth'
 
 export default {
   methods: {
@@ -48,13 +48,6 @@ body {
   display: flex;
   flex-flow: wrap;
   padding: 1rem;
-}
-
-img {
-  border: 1px solid #d8d8d8;
-  width: 70%;
-  margin: 40px;
-  box-shadow: 0px 0.5px 1px #d8d8d8;
 }
 
 .product-image {
@@ -94,12 +87,13 @@ button {
   background-color: #d8d8d8;
 }
 
-.review-form {
-  width: 400px;
-  padding: 20px;
-  margin: 40px;
+img {
   border: 1px solid #d8d8d8;
+  width: 70%;
+  margin: 40px;
+  box-shadow: 0px 0.5px 1px #d8d8d8;
 }
+
 
 input {
   width: 100%;
@@ -107,22 +101,32 @@ input {
   margin-bottom: 20px;
 }
 
-textarea {
-  width: 100%;
-  height: 60px;
-}
-
 .thick {
   font-weight: bold;
 }
 
-.tab {
-  margin-left: 20px;
-  cursor: pointer;
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
 }
 
-.activeTab {
-  color: #16c0b0;
-  text-decoration: underline;
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color: #111;
 }
 </style>

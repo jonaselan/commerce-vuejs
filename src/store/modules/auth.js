@@ -39,7 +39,7 @@ export default {
             axios.defaults.headers.common['Authorization'] = token
             // you have your token, now log in your user :)
             commit(AUTH_SUCCESS, resp)
-            dispatch(USER_REQUEST)
+            // dispatch(USER_REQUEST)
             resolve(resp)
           })
           .catch(err => {
