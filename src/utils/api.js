@@ -7,14 +7,14 @@ export {
 };
 
 function ApiProducts() {
-  // const url = `${BASE_URL}`;
   return axios({
       method: 'get',
       baseURL: BASE_URL,
       url: '/api/v1/products',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('user-token')
       }
     })
     .then(response => response.data);

@@ -17,12 +17,11 @@ export default {
   },
   actions: {
     [AUTH_REQUEST]: ({
-      commit,
-      dispatch
+      commit
     }, user) => {
       // The Promise used for router redirect in login
       return new Promise((resolve, reject) => { 
-        commit(AUTH_REQUEST)
+        commit(AUTH_REQUEST);
         axios({
             method: 'post',
             baseURL: 'http://laravelproject.test',
@@ -34,50 +33,49 @@ export default {
             }
           })
           .then(resp => {
-            const token = resp.data.access_token
-            localStorage.setItem('user-token', token)
-            axios.defaults.headers.common['Authorization'] = token
+            const token = resp.data.access_token;
+            localStorage.setItem('user-token', token);
+            axios.defaults.headers.common['Authorization'] = token;
             // you have your token, now log in your user :)
-            commit(AUTH_SUCCESS, token)
+            commit(AUTH_SUCCESS, token);
             // dispatch(USER_REQUEST)
-            resolve(resp)
+            resolve(resp);
           })
           .catch(err => {
-            commit(AUTH_ERROR, err)
+            commit(AUTH_ERROR, err);
             // if the request fails, remove any possible user token if possible
-            localStorage.removeItem('user-token')
-            reject(err)
-          })
-      })
+            localStorage.removeItem('user-token');
+            reject(err);
+          });
+      });
     },
     [AUTH_LOGOUT]: ({
-      commit,
-      dispatch
+      commit
     }) => {
       // clear your user's token from localstorage
-      return new Promise((resolve, reject) => {
-        commit(AUTH_LOGOUT)
-        localStorage.removeItem('user-token')
+      return new Promise((resolve) => {
+        commit(AUTH_LOGOUT);
+        localStorage.removeItem('user-token');
         // remove the axios default header
-        delete axios.defaults.headers.common['Authorization']
-        resolve()
-      })
+        delete axios.defaults.headers.common['Authorization'];
+        resolve();
+      });
     }
   },
   // basic mutations, showing loading, success, error to reflect the api call status and the token when loaded
   mutations: {
     [AUTH_REQUEST]: (state) => {
-      state.status = 'loading'
+      state.status = 'loading';
     },
     [AUTH_SUCCESS]: (state, token) => {
-      state.status = 'success'
-      state.token = token
+      state.status = 'success';
+      state.token = token;
     },
     [AUTH_ERROR]: (state) => {
-      state.status = 'error'
+      state.status = 'error';
     },
     [AUTH_LOGOUT]: (state) => {
-      state.token = ''
+      state.token = '';
     }
   }
-}
+};
