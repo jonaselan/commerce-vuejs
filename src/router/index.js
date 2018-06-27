@@ -4,10 +4,12 @@ import Shop from '@/components/Shop'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Products from '@/components/Products'
-import auth from '../store/modules/auth'
+import store from '../store/store'
+
+Vue.use(Router)
 
 const NotAuthenticated = (to, from, next) => {
-  if (!auth.getters.isAuthenticated) {
+  if (!store.getters.isAuthenticated) {
     next()
     return
   }
@@ -15,14 +17,12 @@ const NotAuthenticated = (to, from, next) => {
 }
 
 const Authenticated = (to, from, next) => {
-  if (auth.getters.isAuthenticated) {
+  if (store.getters.isAuthenticated) {
     next()
     return
   }
   next('/login')
 }
-
-Vue.use(Router)
 
 export default new Router({
   routes: [

@@ -34,11 +34,11 @@ export default {
             }
           })
           .then(resp => {
-            const token = resp.data.token
+            const token = resp.data.access_token
             localStorage.setItem('user-token', token)
             axios.defaults.headers.common['Authorization'] = token
             // you have your token, now log in your user :)
-            commit(AUTH_SUCCESS, resp)
+            commit(AUTH_SUCCESS, token)
             // dispatch(USER_REQUEST)
             resolve(resp)
           })
@@ -76,5 +76,8 @@ export default {
     [AUTH_ERROR]: (state) => {
       state.status = 'error'
     },
+    [AUTH_LOGOUT]: (state) => {
+      state.token = ''
+    }
   }
 }
