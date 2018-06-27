@@ -9,6 +9,8 @@ import axios from 'axios';
 export default {
   state: {
     token: localStorage.getItem('user-token') || '',
+    expire_time: localStorage.getItem('user-token-time') || '',
+    refresh_token: localStorage.getItem('user-refresh-token') || '',
     status: '',
   },
   getters: {
@@ -34,17 +36,22 @@ export default {
           })
           .then(resp => {
             const token = resp.data.access_token;
-            localStorage.setItem('user-token', token);
             axios.defaults.headers.common['Authorization'] = token;
-            // you have your token, now log in your user :)
-            commit(AUTH_SUCCESS, token);
-            // dispatch(USER_REQUEST)
+
+            localStorage.setItem('user-token', token);
+            localStorage.setItem('user-refresh-token', resp.data.refresh_token);
+            localStorage.setItem('user-token-time', resp.data.expires_in);
+            
+            // you have your token :)
+            commit(AUTH_SUCCESS, resp);
+
             resolve(resp);
           })
           .catch(err => {
-            commit(AUTH_ERROR, err);
             // if the request fails, remove any possible user token if possible
             localStorage.removeItem('user-token');
+
+            commit(AUTH_ERROR, err);
             reject(err);
           });
       });
@@ -67,9 +74,12 @@ export default {
     [AUTH_REQUEST]: (state) => {
       state.status = 'loading';
     },
-    [AUTH_SUCCESS]: (state, token) => {
+    [AUTH_SUCCESS]: (state, resp) => {
       state.status = 'success';
-      state.token = token;
+
+      state.token = resp.data.access_token;
+      state.refresh_token = resp.data.refresh_token;
+      state.expire_time = resp.data.expires_in;
     },
     [AUTH_ERROR]: (state) => {
       state.status = 'error';

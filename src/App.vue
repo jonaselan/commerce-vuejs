@@ -17,7 +17,8 @@
 </template>
 
 <script>
-import { AUTH_LOGOUT } from './store/actions/auth'
+import { AUTH_LOGOUT } from "./store/actions/auth";
+import axios from "axios";
 
 export default {
   methods: {
@@ -26,10 +27,21 @@ export default {
         this.$router.push("/login");
       });
     }
+  },
+  created() {
+    var self = this;
+    axios.interceptors.response.use(undefined, function(err) {
+      return new Promise(function(resolve, reject) {
+        if (err.request.status === 401) {
+          // if you ever get an unauthorized, logout the user
+          self.logout();
+        }
+        throw err;
+      });
+    });
   }
 };
 </script>
-
 
 <style>
 body {
@@ -94,7 +106,6 @@ img {
   box-shadow: 0px 0.5px 1px #d8d8d8;
 }
 
-
 input {
   width: 100%;
   height: 25px;
@@ -106,27 +117,27 @@ input {
 }
 
 ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
 }
 
 li {
-    float: left;
+  float: left;
 }
 
 li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
 /* Change the link color to #111 (black) on hover */
 li a:hover {
-    background-color: #111;
+  background-color: #111;
 }
 </style>
