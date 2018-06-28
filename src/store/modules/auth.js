@@ -60,12 +60,30 @@ export default {
       commit
     }) => {
       // clear your user's token from localstorage
-      return new Promise((resolve) => {
-        commit(AUTH_LOGOUT);
-        localStorage.removeItem('user-token');
-        // remove the axios default header
-        delete axios.defaults.headers.common['Authorization'];
-        resolve();
+      return new Promise((resolve, reject) => {
+        commit(AUTH_REQUEST);
+        axios({
+          method: 'post',
+          baseURL: 'http://laravelproject.test',
+          url: '/api/logout',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('user-token')
+          }
+        })
+        .then(() => {
+          commit(AUTH_LOGOUT);
+          localStorage.removeItem('user-token');
+          // remove the axios default header
+          delete axios.defaults.headers.common['Authorization'];
+          resolve();
+        })
+        .catch(err => {
+          commit(AUTH_ERROR, err);
+          reject(err);
+        });
+        
       });
     }
   },
@@ -85,7 +103,11 @@ export default {
       state.status = 'error';
     },
     [AUTH_LOGOUT]: (state) => {
+      state.status = 'exit';
+
       state.token = '';
+      state.refresh_token = '';
+      state.expire_time = '';
     }
   }
 };
