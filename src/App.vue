@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { AUTH_LOGOUT } from "./store/actions/auth";
+import { AUTH_LOGOUT, AUTH_REFRESH } from "./store/actions/auth";
 import axios from "axios";
 
 export default {
@@ -26,6 +26,11 @@ export default {
       this.$store.dispatch(AUTH_LOGOUT).then(() => {
         this.$router.push("/login");
       });
+    },
+    refresh() {
+      this.$store.dispatch(AUTH_REFRESH).then(() => {
+        next();
+      });
     }
   },
   created() {
@@ -33,8 +38,8 @@ export default {
     axios.interceptors.response.use(undefined, function(err) {
       return new Promise(function(resolve, reject) {
         if (err.request.status === 401) {
-          // if you ever get an unauthorized, logout the user
-          self.logout();
+          // if you ever get an unauthorized, get a new token
+          self.refresh();
         }
         throw err;
       });

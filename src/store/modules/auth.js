@@ -2,7 +2,8 @@ import {
   AUTH_REQUEST,
   AUTH_ERROR,
   AUTH_SUCCESS,
-  AUTH_LOGOUT
+  AUTH_LOGOUT,
+  AUTH_REFRESH
 } from '../actions/auth';
 import axios from 'axios';
 
@@ -51,6 +52,44 @@ export default {
             // if the request fails, remove any possible user token if possible
             localStorage.removeItem('user-token');
 
+            commit(AUTH_ERROR, err);
+            reject(err);
+          });
+      });
+    },
+    [AUTH_REFRESH]: ({
+      commit
+    }) => {
+      // The Promise used for router redirect in login
+      return new Promise((resolve, reject) => { 
+        commit(AUTH_REQUEST);
+        axios({
+            method: 'post',
+            baseURL: 'http://laravelproject.test',
+            url: '/api/login/refresh',
+            data: {
+              refreshToken: localStorage.getItem('user-refresh-token')
+            },
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + localStorage.getItem('user-token')
+            }
+          })
+          .then(resp => {
+            const token = resp.data.access_token;
+            axios.defaults.headers.common['Authorization'] = token;
+
+            localStorage.setItem('user-token', token);
+            localStorage.setItem('user-refresh-token', resp.data.refresh_token);
+            localStorage.setItem('user-token-time', resp.data.expires_in);
+            
+            // you have your token :)
+            commit(AUTH_SUCCESS, resp);
+
+            resolve(resp);
+          })
+          .catch(err => {
             commit(AUTH_ERROR, err);
             reject(err);
           });

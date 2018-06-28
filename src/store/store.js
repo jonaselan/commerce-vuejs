@@ -48,4 +48,4 @@ export default new Vuex.Store({
     getters,
     // usado para executar mutations e realizar ações assicronas
     actions
-})
+});
