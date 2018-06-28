@@ -1,22 +1,54 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Shop from '@/components/Shop'
-import Home from '@/components/Home'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Shop from '@/components/Shop';
+import Home from '@/components/Home';
+import Login from '@/components/Login';
+import Products from '@/components/Products';
+import store from '../store/store';
 
-Vue.use(Router)
+Vue.use(Router);
+
+const NotAuthenticated = (to, from, next) => {
+  if (!store.getters.isAuthenticated) {
+    next();
+    return;
+  }
+  next('/');
+};
+
+const Authenticated = (to, from, next) => {
+  if (store.getters.isAuthenticated) {
+    next();
+    return;
+  }
+  next('/login');
+};
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'Home',
-      component: Home
+      component: Home,
+      beforeEnter: Authenticated,
+    },
+    {
+      path: '/shopping',
+      name: 'Shop',
+      component: Shop,
+      beforeEnter: Authenticated,
     },
     {
       path: '/products',
-      name: 'Shop',
-      component: Shop
-    }
+      name: 'Product',
+      component: Products,
+      beforeEnter: Authenticated,
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login,
+      beforeEnter: NotAuthenticated,
+    },
   ],
   mode: 'history'
-})
+});

@@ -3,15 +3,19 @@ import Vuex from 'vuex';
 import actions from './actions';
 import getters from './getters';
 import mutations from './mutations';
-// import axios from 'axios'
+import auth from './modules/auth'
 
 Vue.use(Vuex)
 
 // exportar para toda a aplicação
 export default new Vuex.Store({
+    modules: {
+      auth
+    },
     // obrigatório em cada store
     state: {
         cart: [],
+        productsApi: [],
         products: [
             {
               id: 1,
@@ -44,4 +48,4 @@ export default new Vuex.Store({
     getters,
     // usado para executar mutations e realizar ações assicronas
     actions
-})
+});

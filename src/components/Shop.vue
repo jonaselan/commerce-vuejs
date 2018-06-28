@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isAuthenticated">
     <ShopCart/>
     <div class="product">
       <div v-for="product in products" :key="product.id">
@@ -24,23 +24,24 @@
 </template>
 
 <script>
-  import ShopCart from '@/components/ShopCart'
-  import { mapGetters, mapActions } from 'vuex'
+import ShopCart from "@/components/ShopCart";
+import { mapGetters, mapActions } from "vuex";
 
-  export default {
-    components:{
-      ShopCart
-    },
-    computed: {
-      ...mapGetters({
-        products: 'getProducts',
-        productIsInStock: 'productIsInStock'
-      })
-    },
-    methods: {
-      ...mapActions({
-        addToCart: 'addProductToCart'  // this.$store.dispatch('addProductToCart', product)
-      }),
-    }
+export default {
+  components: {
+    ShopCart
+  },
+  computed: {
+    ...mapGetters({
+      products: "getShopProducts",
+      productIsInStock: "productIsInStock",
+      isAuthenticated: "isAuthenticated"
+    })
+  },
+  methods: {
+    ...mapActions({
+      addToCart: "addProductToCart" // this.$store.dispatch('addProductToCart', product)
+    })
   }
+};
 </script>
