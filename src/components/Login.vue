@@ -1,18 +1,26 @@
 <template>
  <div>
-   <form class="login" @submit.prevent="login">
-     <h1>Sign in</h1>
-     <label>Email:</label>
-     <input required v-model="email" type="text" />
-     <label>Password: </label>
-     <input required v-model="password" type="password" />
-     <button type="submit">Login</button>
-   </form>
+   <div v-if="loading"> 
+     <Loading />
+   </div>
+   <div v-else>
+    <form class="login" @submit.prevent="login">
+        <h1>Sign in</h1>
+        <label>Email:</label>
+        <input required v-model="email" type="text" />
+        <label>Password: </label>
+        <input required v-model="password" type="password" />
+        <button type="submit">Login</button>
+    </form>
+   </div>
+   
  </div>
 </template>
 
 <script>
 import { AUTH_REQUEST } from "../store/actions/auth";
+import { mapGetters } from "vuex";
+import Loading from "@/components/Loading";
 
 export default {
   name: "login",
@@ -21,6 +29,15 @@ export default {
       email: "email@email.com",
       password: "123123"
     };
+  },
+  components: {
+    Loading
+  },
+  computed: {
+    ...mapGetters(["isAuthenticated", "authStatus"]),
+    loading: function() {
+      return this.authStatus === "loading" && !this.isAuthenticated;
+    }
   },
   methods: {
     login: function() {

@@ -9,8 +9,8 @@
         <li><a @click='logout'>Logout</a></li>
       </ul>
     </div>
-    
-    <div id="app">
+  
+    <div id="app">  
       <router-view/>
     </div>
   </div>

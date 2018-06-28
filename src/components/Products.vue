@@ -1,6 +1,5 @@
 <template>
-  <div>
-    
+  <div v-if="isAuthenticated">
     <h3 class="text-center">Produtos</h3>
     <hr/>
 
@@ -15,15 +14,16 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 
 export default {
   beforeMount() {
     this.$store.dispatch('fetchProducts')
   },
-  methods: {
-
-  },
   computed: {
+    ...mapGetters({
+      isAuthenticated: "isAuthenticated"
+    }),
     getProducts(){
       return this.$store.getters.getProducts;
     }

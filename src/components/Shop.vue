@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isAuthenticated">
     <ShopCart/>
     <div class="product">
       <div v-for="product in products" :key="product.id">
@@ -34,7 +34,8 @@ export default {
   computed: {
     ...mapGetters({
       products: "getShopProducts",
-      productIsInStock: "productIsInStock"
+      productIsInStock: "productIsInStock",
+      isAuthenticated: "isAuthenticated"
     })
   },
   methods: {
