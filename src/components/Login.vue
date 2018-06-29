@@ -42,7 +42,7 @@ export default {
   methods: {
     login: function() {
       const { email, password } = this;
-      // Vuex actions returning promises
+      // Vuex actions retorna promises
       this.$store.dispatch(AUTH_REQUEST, { email, password }).then(() => {
         this.$router.push("/");
       });

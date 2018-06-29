@@ -29,7 +29,7 @@ export default {
     },
     refresh() {
       this.$store.dispatch(AUTH_REFRESH).then(() => {
-        next();
+        // next();
       });
     }
   },

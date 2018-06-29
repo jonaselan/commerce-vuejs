@@ -13,8 +13,7 @@ function ApiProducts() {
       url: '/api/v1/products',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('user-token')
+        'Content-Type': 'application/json'
       }
     })
     .then(response => response.data);

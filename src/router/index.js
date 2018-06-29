@@ -8,6 +8,7 @@ import store from '../store/store';
 
 Vue.use(Router);
 
+// não acessa até se autenticar
 const NotAuthenticated = (to, from, next) => {
   if (!store.getters.isAuthenticated) {
     next();
@@ -15,7 +16,7 @@ const NotAuthenticated = (to, from, next) => {
   }
   next('/');
 };
-
+// só acessa quem estiver autenticado
 const Authenticated = (to, from, next) => {
   if (store.getters.isAuthenticated) {
     next();
@@ -24,6 +25,7 @@ const Authenticated = (to, from, next) => {
   next('/login');
 };
 
+// usar beforeEnter para proteger as rotas
 export default new Router({
   routes: [{
       path: '/',

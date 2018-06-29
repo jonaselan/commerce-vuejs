@@ -17,6 +17,7 @@
 import { mapGetters } from "vuex";
 
 export default {
+  // recuperar os produtos para posteriormente mostrar na tela
   beforeMount() {
     this.$store.dispatch('fetchProducts')
   },

@@ -8,7 +8,7 @@
 export default {};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- Adicionar "scoped" para aplicar estilos especificos a um componente -->
 <style scoped>
 h1,
 h2 {

@@ -15,14 +15,14 @@ export default {
     status: '',
   },
   getters: {
-    isAuthenticated: state => !!state.token,
+    isAuthenticated: state => !!state.token, // existe o token no state? (bool)
     authStatus: state => state.status,
   },
   actions: {
     [AUTH_REQUEST]: ({
       commit
     }, user) => {
-      // The Promise used for router redirect in login
+      // A Promise usada para redirecionar para o login
       return new Promise((resolve, reject) => { 
         commit(AUTH_REQUEST);
         axios({
@@ -37,19 +37,21 @@ export default {
           })
           .then(resp => {
             const token = resp.data.access_token;
-            axios.defaults.headers.common['Authorization'] = token;
+            // quando recupera o token, coloca como default nas próximas requisições
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
+            // salvar os dados no local storage
             localStorage.setItem('user-token', token);
             localStorage.setItem('user-refresh-token', resp.data.refresh_token);
             localStorage.setItem('user-token-time', resp.data.expires_in);
             
-            // you have your token :)
+            // salvar no state :)
             commit(AUTH_SUCCESS, resp);
 
             resolve(resp);
           })
           .catch(err => {
-            // if the request fails, remove any possible user token if possible
+            // se ser erro, remover o token
             localStorage.removeItem('user-token');
 
             commit(AUTH_ERROR, err);
@@ -60,7 +62,6 @@ export default {
     [AUTH_REFRESH]: ({
       commit
     }) => {
-      // The Promise used for router redirect in login
       return new Promise((resolve, reject) => { 
         commit(AUTH_REQUEST);
         axios({
@@ -72,19 +73,17 @@ export default {
             },
             headers: {
               'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + localStorage.getItem('user-token')
+              'Content-Type': 'application/json'
             }
           })
           .then(resp => {
             const token = resp.data.access_token;
-            axios.defaults.headers.common['Authorization'] = token;
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
             localStorage.setItem('user-token', token);
             localStorage.setItem('user-refresh-token', resp.data.refresh_token);
             localStorage.setItem('user-token-time', resp.data.expires_in);
             
-            // you have your token :)
             commit(AUTH_SUCCESS, resp);
 
             resolve(resp);
@@ -98,7 +97,7 @@ export default {
     [AUTH_LOGOUT]: ({
       commit
     }) => {
-      // clear your user's token from localstorage
+      // remover token do localstorage e do servidor
       return new Promise((resolve, reject) => {
         commit(AUTH_REQUEST);
         axios({
@@ -107,14 +106,13 @@ export default {
           url: '/api/logout',
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('user-token')
+            'Content-Type': 'application/json'
           }
         })
         .then(() => {
           commit(AUTH_LOGOUT);
           localStorage.removeItem('user-token');
-          // remove the axios default header
+          // remover header padrãdo do axios
           delete axios.defaults.headers.common['Authorization'];
           resolve();
         })
